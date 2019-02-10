@@ -22,12 +22,21 @@ export default withAuth(class ImplicitCallback extends Component {
       authenticated: null,
       error: null
     };
+
+    this.renderError = this.renderError.bind(this);
   }
 
   componentDidMount() {
     this.props.auth.handleAuthentication()
     .then(() => this.setState({ authenticated: true }))
     .catch(err => this.setState({ authenticated: false, error: err.toString() }));
+  }
+
+  renderError() {
+    if(this.props.renderError) {
+      return this.props.renderError(this.state.error);
+    }
+    return <p>{this.state.error}</p>;
   }
 
   render() {
@@ -39,8 +48,6 @@ export default withAuth(class ImplicitCallback extends Component {
     const location = JSON.parse(localStorage.getItem(referrerKey) || '{ "pathname": "/" }');
     localStorage.removeItem(referrerKey);
 
-    return this.state.authenticated ?
-      <Redirect to={location}/> :
-      <p>{this.state.error}</p>;
+    return this.state.authenticated ? <Redirect to={location}/> : renderError();
   }
 });
