@@ -273,6 +273,18 @@ export default App;
 ### `ImplicitCallback`
 
 `ImplicitCallback` handles the callback after the redirect. By default, it parses the tokens from the uri, stores them, then redirects to `/`. If a `SecureRoute` caused the redirect, then the callback redirects to the secured route.
+You can also pass a custom render prop to show errors. For example:
+```javascript
+<Route
+  path='/implicit/callback'
+  render={(props) =>
+    <ImplicitCallback
+      {...props}
+      renderError={(error) => <div>There was a problem, please show this to your okta admin: {error}</div>}
+    />
+  }
+/>
+```
 
 ### `withAuth`
 
